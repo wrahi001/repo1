@@ -8,21 +8,19 @@ using namespace std;
 
 class Menu {
 	private:
-		int history_index;
+		unsigned int history_index;
 		vector<Command*> history;
-		bool undoFlag;
-		bool redoFlag;
+		
 	public:
 		Menu() {
 			//Base constructor to set up all necessary members
 			history_index = 0;
-			undoFlag = false;
-			redoFlag = false;
+			
 		};
 		void execute() {
 			//Prints the current commands value (based on history_index), if no commands exist
 			//print 0 by default
-			cout << "Goes into execute func" << endl;
+			
 			if (history_index > 0) {
 			cout << history.at(history_index -1)->execute() << endl;
 			}
@@ -42,18 +40,12 @@ class Menu {
 		};
 		void add_command(Command* cmd) {
 			//Adds a command to history in the appropriate posiiton (based on history_index)
-			cout << "Goes into add command func" << endl;
-			;
-			if (undoFlag) {
-				history.at(history_index) = cmd;
-				undoFlag = false;
-			}
-			else if (redoFlag) {
-				redoFlag = false;	
+			
+			if (history.size() == history_index) {
 				history.push_back(cmd);
 			}
 			else {
-				history.push_back(cmd);
+				history.at(history_index) = cmd;
 			}
 			history_index++;
 			
@@ -64,15 +56,15 @@ class Menu {
 		};
 		void undo() {
 			//Moves to the last command in history (if possible)
-			undoFlag = true;
-			if (history_index != 0) {
+			
+			if (history_index > 0) {
 				history_index--;
 			}
 
 		};
 		void redo() {
 			//Moves to the next command in history (if possible)
-			redoFlag = true;
+			
 			if (history_index < history.size()) {
 				history_index++;
 			}
